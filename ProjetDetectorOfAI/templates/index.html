@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Vision App</title>
+
+  <style>
+    body {
+      background-color: #B294FA;
+    }
+
+    h1, h2, h3 {
+      color: #fff;
+    }
+
+    #preview {
+      width: 300px;
+      height: 200px;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Custom Vision App</h1>
+
+  <form action="/predict" method="post" enctype="multipart/form-data">
+    <label for="file">Sélectionnez une image :</label>
+    <input type="file" name="file" accept="image/*" id="file" required>
+    <img id="preview" src="" alt="Aperçu de l'image">
+    <button type="submit">Prédire</button>
+  </form>
+
+  {% if prediction %}
+    <h2>Résultat de la prédiction :</h2>
+    <p>{{ prediction }}</p>
+  {% endif %}
+
+  {% if error %}
+    <p style="color: red;">{{ error }}</p>
+  {% endif %}
+
+  <script>
+    // Fonction appelée lorsque l'utilisateur sélectionne un fichier
+    function onFileSelected(event) {
+      // Récupère l'image sélectionnée
+      var image = event.target.files[0];
+
+      // Vérifie si l'image est valide
+      if (!image) {
+        return;
+      }
+
+      // Affiche l'image sélectionnée dans l'img
+      var img = document.getElementById("preview");
+      img.src = window.URL.createObjectURL(image);
+
+      // Empêche le formulaire de soumettre
+      event.preventDefault();
+    }
+
+    // Initialisation de l'input
+    document.getElementById("file").addEventListener("change", onFileSelected);
+  </script>
+</body>
+</html>
